@@ -1,0 +1,22 @@
+{
+  "name": "MERN_Ninjas",
+  "version": "1.0.0",
+  "description": "Mern_Ninja #1 Federico Salinas Dalton Studebaker Jose Anzueto Swetha Khaidalagudam",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.generalassemb.ly/sjenny/MERN_Ninjas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.8.3",
+    "react-router": "^5.1.2"
+  }
+}
