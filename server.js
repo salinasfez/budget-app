@@ -3,6 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const app = express()
 const db = mongoose.connection;
+const method = require('method-override');//method override 
 
 // Environment Variables
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/merncrud'
@@ -20,7 +21,7 @@ db.on('disconnected', () => console.log('mongo disconnected'))
 // Middleware
 app.use(express.urlencoded({ extended: false }))// extended: false - does not allow nested objects in query strings
 app.use(express.json())// returns middleware that only parses JSON
-
+app.use(method('_method'));
 app.use(express.static('public'))
 
 // Routes

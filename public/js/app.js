@@ -11,6 +11,9 @@ class Income extends React.Component {
   // };
  
   render() {
+    // let totalIncome = this.props.firstIncome.amount + this.props.secondIncome.amount + this.props.thirdIncome.amount;
+    let totalIncome = this.props.income.reduce(function(a,b) {return a + b.amount}, 0)
+    let totalBillAmount = this.props.bills.reduce(function(a,b) {return a + b.amount}, 0)
     return (
       <div className='row justify-content-center' >
       <form class="form-inline " onSubmit={this.props.handleIncomeSubmit}>
@@ -25,33 +28,47 @@ class Income extends React.Component {
       </form>
       <div className='row' >
         <div className='col border my-3 p-3'>
-          <h3>Income</h3>
-          <h4>
-          {this.props.income.map((amount, index) => {
-                    return (
-                        <div>
-                            <p key={amount._id}>${amount.amount}</p>
-                            <button onClick={() => this.props.deleteIncome(amount._id, index)}>DELETE</button>
-                        </div>
+          <table>
+            <thead>
+              <tr>
+                Income
+              </tr>
+            </thead>
+            <tbody>
+               {this.props.income.map((amount, index) => {
+                  return (
+                       <tr>
+                         <td key={amount._id}>${amount.amount}</td>
+                         <button onClick={() => this.props.deleteIncome(amount._id, index)}>Delete</button>
+                         <br></br>
+                       </tr>
                     )
-                })}
-          </h4>
+                  })}
+
+            </tbody>
+          </table>
+                 <br></br>
+                  Total Income: ${totalIncome}
+
+        
         </div>
         <div className='col border my-3 p-3'>
-          <h3>Income remainder to budget</h3>
-          {this.props.income.map((amount, index) => {
+          <h3>Income left to budget</h3>
+          {/* {this.props.income[0].amount} */}
+          {/* {this.props.income.map((amount, index) => {
                     return (
                         <div>
                           {this.props.bills.map((bill, index) => {
                                 return (
                                       <div>
-                                          {amount.amount - bill.amount}
+                                          ${amount.amount - bill.amount}
                                       </div>
                     )
                 })}
                         </div>
                     )
-                })}
+                })} */}
+               ${totalIncome - totalBillAmount}
         </div>
       </div>
       </div>
@@ -108,7 +125,10 @@ class Expenses extends React.Component {
                         <td> {item.name} </td>
                         <td>${item.amount}</td>
                         <td>Paid</td>
-                        <td><button onClick={() => this.props.deleteBill(item._id, index)}>DELETE</button></td>
+                        <td><button onClick={() => this.props.deleteBill(item._id, index)}>Delete</button></td>
+                        <td><button onClick={() => this.props.handleBillUpdate(item._id, index)}>Edit</button></td>
+                        {/* <td><button onClick={() => console.log('testing')}>Edit</button></td> */}
+
                     </tr>
                 )
               })}
@@ -157,8 +177,11 @@ class App extends React.Component {
             'Content-Type': 'application/json'
         }
     }).then(createdBills => {
-        return createdBills.json();
-    }).then(jsonedBills => {
+      return createdBills.json();
+    })
+    // .then( createdBills => console.log(createdBills))
+   
+    .then(jsonedBills => {
         this.setState({
             name: '',
             amount: '',
@@ -166,6 +189,39 @@ class App extends React.Component {
         })
     }).catch(error => console.log(error));
    
+}
+handleBillUpdate = (id) => {
+  
+  fetch('bills/' + id, {
+      body: JSON.stringify({name: this.state.name,
+                            amount: this.state.amount }),
+      method: "PUT",
+      headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+      }
+  })
+  .then(updatedBill => console.log(updatedBill))
+  .then(updatedBill => updatedBill.json())
+  // .then(jMark => {
+  //         fetch("http://localhost:3000/bookmarks/")
+  //             .then(updatedMark => updatedMark.json())
+  //             .then(JupdatedMark => {
+  //                 this.setState({
+  //                     id: "",
+  //                     editing: false,
+  //                     sites: JupdatedMark,
+  //                     formInputs: {
+  //                         site_name:"",
+  //                         url: "",
+  //                         category: "",
+  //                         description: "",
+  //                         img: ""
+  //                     }
+  //                 });
+  //             })
+  // })
+  .catch(err => console.log(err));
 }
 deleteBill = (id, index) => {
   fetch('bills/' + id, {
@@ -222,9 +278,9 @@ deleteIncome = (id, index) => {
       <div>
         <h1 className="text-center">Budget App</h1>
         <div className='container-app border'>          
-          <Income income={this.state.income} handleIncomeChange={this.handleIncomeChange} handleIncomeSubmit={this.handleIncomeSubmit} deleteIncome={this.deleteIncome} bills={this.state.bills}/>
+          <Income income={this.state.income} handleIncomeChange={this.handleIncomeChange} handleIncomeSubmit={this.handleIncomeSubmit} deleteIncome={this.deleteIncome} bills={this.state.bills} />
           <div className='row'>
-           <Expenses bills={this.state.bills} handleBillChange={this.handleBillChange}  handleBillSubmit={this.handleBillSubmit} deleteBill={this.deleteBill} />
+           <Expenses bills={this.state.bills} handleBillChange={this.handleBillChange}  handleBillSubmit={this.handleBillSubmit} deleteBill={this.deleteBill} handleBillUpdate={this.handleBillUpdate}/>
           </div>
         </div>
       </div>
