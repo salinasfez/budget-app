@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap');
+
+
 .container {
     max-width: 900px;
 }
@@ -5,3 +8,55 @@
 .container-app{
 padding: 20px 40px;
 }
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    /* background-color: red; */
+}
+.income {
+    background-color: white;
+    width: 100%;
+}
+.income-left {
+    width: 100%;
+    text-align: left;
+    background-color: white;
+}
+/* .border {
+    color: rgb(238,130,51);
+} */
+.main-container {
+    /* background-color: #88C136; */
+    /* border: 2px solid #88C136; */
+    border: 5px solid rgb(72, 75, 73);
+}
+.add-expense {
+    background-color: white;
+    font-family: 'Rajdhani', sans-serif;
+
+}
+.expense-details {
+    background-color: white;
+    font-family: 'Rajdhani', sans-serif;
+
+}
+h5, th, h6 {
+    color: #037AFB;
+    font-family: 'Rajdhani', sans-serif;
+
+}
+.monthly-income {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 22px;
+}
+.budget-app {
+    font-family: 'Rajdhani', sans-serif;
+}
+/* @media screen and (max-width: 812px){
+
+} */
+
+/* @media screen and (max-width: 450px){
+
+} */

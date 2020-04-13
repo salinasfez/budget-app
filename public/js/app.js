@@ -18,7 +18,7 @@ class Income extends React.Component {
       <div className='row justify-content-center' >
       <form class="form-inline " onSubmit={this.props.handleIncomeSubmit}>
         <div class="form-group mb-2">
-          <label htmlFor="amount" class="form-control-plaintext">Monthly Income</label>
+          <label htmlFor="amount" className="form-control-plaintext monthly-income">Monthly Income</label>
         </div>
 
         <div class="form-group mx-sm-3 mb-2">
@@ -26,18 +26,17 @@ class Income extends React.Component {
         </div>
         <button type="submit" class="btn btn-primary mb-2">Submit</button>
       </form>
-      <div className='row' >
-        <div className='col border my-3 p-3'>
-          <table>
+      <div className='row flex-container' >
+        {/* <div className='col border my-3 p-3'> */}
+          <div className="container-app border income">
+          <table className="table table-striped">
             <thead>
-              <tr>
-                Income
-              </tr>
+              <h5>Income</h5>
             </thead>
             <tbody>
                {this.props.income.map((amount, index) => {
-                  return (
-                       <tr>
+                 return (
+                   <tr>
                          <td key={amount._id}>${amount.amount}</td>
                          <button onClick={() => this.props.deleteIncome(amount._id, index)}>Delete</button>
                          <br></br>
@@ -47,13 +46,16 @@ class Income extends React.Component {
 
             </tbody>
           </table>
+                  
                  <br></br>
-                  Total Income: ${totalIncome}
+                  
 
         
+                 Total Income: ${totalIncome}
         </div>
-        <div className='col border my-3 p-3'>
-          <h3>Income left to budget</h3>
+        {/* <div className='col border my-3 p-3'> */}
+          <div className="container-app border income-left">
+          <h5>Income left to budget</h5>
           {/* {this.props.income[0].amount} */}
           {/* {this.props.income.map((amount, index) => {
                     return (
@@ -88,13 +90,13 @@ class Expenses extends React.Component {
             add bill section 
         ****************/}
 
-        <div className="border my-3 p-3">
+        <div className="border my-3 p-3 add-expense" >
           <form onSubmit={this.props.handleBillSubmit}>
             <div className="form-group">
-              <h3 className='text-center'>Add Expense</h3>
-              <label>Name</label>
+              <h4 className='text-center'>Add Expense</h4>
+              <h6><label>Name</label></h6>
               <input className="form-control" type='text' id="name" placeholder="name" value={this.props.name} onChange={this.props.handleBillChange} /><br />
-              <label>Amount</label>
+              <h6><label>Amount</label></h6>
               <input className="form-control" type='text' id="amount" placeholder="amount" value={this.props.amount} onChange={this.props.handleBillChange} />
             </div>
             <button type="submit" className="btn btn-primary mb-2">Submit</button>
@@ -106,8 +108,8 @@ class Expenses extends React.Component {
             bill Data display section
         ****************/}
 
-        <div className=' border my-3 p-3'>
-          <h3>Expense Details</h3>
+        <div className=' border my-3 p-3 expense-details'>
+          <h4 className="text-center">Expense Details</h4>
           <table className="table table-striped">
             <thead>
               <tr>
@@ -115,6 +117,7 @@ class Expenses extends React.Component {
                 <th scope="col">Amount</th>
                 <th scope="col">Paid</th>
                 <th scope="col">Delete</th>
+                <th scope="col">Edit</th>
               </tr>
             </thead>
             <tbody>
@@ -275,8 +278,8 @@ deleteIncome = (id, index) => {
 
   render() {
     return (
-      <div>
-        <h1 className="text-center">Budget App</h1>
+      <div className="main-container">
+        <h3 className="text-center budget-app">Budget App</h3>
         <div className='container-app border'>          
           <Income income={this.state.income} handleIncomeChange={this.handleIncomeChange} handleIncomeSubmit={this.handleIncomeSubmit} deleteIncome={this.deleteIncome} bills={this.state.bills} />
           <div className='row'>
