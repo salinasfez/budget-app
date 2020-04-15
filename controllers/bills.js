@@ -21,6 +21,17 @@ router.delete('/:id', (req, res) => {
         res.json(deletedBill);
     })
 })
+// //edit route/page
+// router.get('/:id/edit', (req, res) =>{
+//     Bills.findById(req.params.id, (err, foundBill) => { //find the bill
+//         res.render(
+//             'edit.jsx',
+//             {
+//                 bill: foundBill //pass it found bill
+//             }
+//         );
+//     });
+// });
 
 router.post('/', (req, res) => {
     Bills.create(req.body, (err, createdBill) => {
@@ -33,6 +44,9 @@ router.put('/:id', (req, res) => {
     Bills.findByIdAndUpdate(req.params.id, req.body, {new:true}, (err, updatedBill) => {
         res.json(updatedBill)
     })
+})
+router.put('/:id', (req, res) => {
+    res.send(req.body);
 })
 
 module.exports = router;

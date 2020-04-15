@@ -22,7 +22,7 @@ class Income extends React.Component {
         </div>
 
         <div class="form-group mx-sm-3 mb-2">
-          <input type="text" class="form-control" id="amount" placeholder="amount" value={this.props.amount} onChange={this.props.handleIncomeChange} />
+          <input type="text" class="form-control" id="amount" placeholder="amount" value={this.props.amount} onChange={this.props.handleIncomeChange} required/>
         </div>
         <button type="submit" class="btn btn-primary mb-2">Submit</button>
       </form>
@@ -95,9 +95,9 @@ class Expenses extends React.Component {
             <div className="form-group">
               <h4 className='text-center'>Add Expense</h4>
               <h6><label>Name</label></h6>
-              <input className="form-control" type='text' id="name" placeholder="name" value={this.props.name} onChange={this.props.handleBillChange} /><br />
+              <input className="form-control" type='text' id="name" placeholder="name" value={this.props.name} onChange={this.props.handleBillChange} required/><br />
               <h6><label>Amount</label></h6>
-              <input className="form-control" type='text' id="amount" placeholder="amount" value={this.props.amount} onChange={this.props.handleBillChange} />
+              <input className="form-control" type='text' id="amount" placeholder="amount" value={this.props.amount} onChange={this.props.handleBillChange} required/>
             </div>
             <button type="submit" className="btn btn-primary mb-2">Submit</button>
           </form>
@@ -117,7 +117,6 @@ class Expenses extends React.Component {
                 <th scope="col">Amount</th>
                 <th scope="col">Paid</th>
                 <th scope="col">Delete</th>
-                <th scope="col">Edit</th>
               </tr>
             </thead>
             <tbody>
@@ -127,11 +126,8 @@ class Expenses extends React.Component {
                     <tr>
                         <td> {item.name} </td>
                         <td>${item.amount}</td>
-                        <td>Paid</td>
+                        <td onClick={() => this.props.handleBillUpdate(item, index)}>{item.isPaid ? `Paid`: 'Not paid'}</td>
                         <td><button onClick={() => this.props.deleteBill(item._id, index)}>Delete</button></td>
-                        <td><button onClick={() => this.props.handleBillUpdate(item._id, index)}>Edit</button></td>
-                        {/* <td><button onClick={() => console.log('testing')}>Edit</button></td> */}
-
                     </tr>
                 )
               })}
@@ -193,37 +189,27 @@ class App extends React.Component {
     }).catch(error => console.log(error));
    
 }
-handleBillUpdate = (id) => {
-  
-  fetch('bills/' + id, {
-      body: JSON.stringify({name: this.state.name,
-                            amount: this.state.amount }),
+handleBillUpdate = (item, index) => {
+  item.isPaid = !item.isPaid
+  fetch('bills/' + item._id, {
+      body: JSON.stringify(item),
       method: "PUT",
       headers: {
           'Accept': 'application/json, text/plain, */*',
           'Content-Type': 'application/json'
       }
   })
-  .then(updatedBill => console.log(updatedBill))
-  .then(updatedBill => updatedBill.json())
-  // .then(jMark => {
-  //         fetch("http://localhost:3000/bookmarks/")
-  //             .then(updatedMark => updatedMark.json())
-  //             .then(JupdatedMark => {
-  //                 this.setState({
-  //                     id: "",
-  //                     editing: false,
-  //                     sites: JupdatedMark,
-  //                     formInputs: {
-  //                         site_name:"",
-  //                         url: "",
-  //                         category: "",
-  //                         description: "",
-  //                         img: ""
-  //                     }
-  //                 });
-  //             })
-  // })
+  //converting response to json
+  .then(updatedItem => updatedItem.json())
+  .then(updatedItem => console.log(updatedItem))
+  //making a new get request to update state of updated item
+  .then(jsonedItem => {
+    fetch('/bills')
+      .then(res => res.json())
+      .then(bills => {
+        this.setState({bills: bills})
+      })
+  })
   .catch(err => console.log(err));
 }
 deleteBill = (id, index) => {
