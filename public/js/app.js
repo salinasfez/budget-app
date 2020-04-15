@@ -124,7 +124,12 @@ class Expenses extends React.Component {
             {this.props.bills.map((item,index) => {
                 return (
                     <tr>
-                        <td> {item.name} </td>
+                        {/* <td onDoubleClick={() => this.props.changeEditMode()}> {item.name} </td> */}
+                        {this.props.isInEditMode ? 
+                          <td><input type='text' defaultValue={item.name}/><button onClick={this.props.updateName(item, index)}>x</button></td>
+                        : <td  onDoubleClick={() => this.props.updateName(item, index)}>{item.name}</td>}
+                        {console.log(this.props.isInEditMode)}
+                       {/* <td onDoubleClick={() => this.props.changeEditMode}>{item.name}</td>} */}
                         <td>${item.amount}</td>
                         <td onClick={() => this.props.handleBillUpdate(item, index)}>{item.isPaid ? `Paid`: 'Not paid'}</td>
                         <td><button onClick={() => this.props.deleteBill(item._id, index)}>Delete</button></td>
@@ -141,6 +146,8 @@ class Expenses extends React.Component {
 }
 class App extends React.Component {
   state = {
+
+    isInEditMode: false,
     bills: [],
     income: []
   }
@@ -160,6 +167,7 @@ class App extends React.Component {
         })
     );
   }
+
   handleBillChange = (event) => {
     this.setState({ [event.target.id]: event.target.value })
   }
@@ -201,13 +209,38 @@ handleBillUpdate = (item, index) => {
   })
   //converting response to json
   .then(updatedItem => updatedItem.json())
-  .then(updatedItem => console.log(updatedItem))
+  // .then(updatedItem => console.log(updatedItem))
   //making a new get request to update state of updated item
   .then(jsonedItem => {
     fetch('/bills')
       .then(res => res.json())
       .then(bills => {
         this.setState({bills: bills})
+      })
+  })
+  .catch(err => console.log(err));
+}
+handleBillNameUpdate = (item, index) => {
+  this.state.isInEditMode = !this.state.isInEditMode;
+  fetch('bills/' + item._id, {
+      body: JSON.stringify(item),
+      method: "PUT",
+      headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+      }
+  })
+  //converting response to json
+  .then(updatedItem => updatedItem.json())
+  // .then(updatedItem => console.log(updatedItem.name))
+  //making a new get request to update state of updated item
+  .then(jsonedItem => {
+    fetch('/bills')
+      .then(res => res.json())
+      .then(bills => {
+        this.setState({
+          bills: bills
+        })
       })
   })
   .catch(err => console.log(err));
@@ -269,7 +302,7 @@ deleteIncome = (id, index) => {
         <div className='container-app border'>          
           <Income income={this.state.income} handleIncomeChange={this.handleIncomeChange} handleIncomeSubmit={this.handleIncomeSubmit} deleteIncome={this.deleteIncome} bills={this.state.bills} />
           <div className='row'>
-           <Expenses bills={this.state.bills} handleBillChange={this.handleBillChange}  handleBillSubmit={this.handleBillSubmit} deleteBill={this.deleteBill} handleBillUpdate={this.handleBillUpdate}/>
+           <Expenses bills={this.state.bills} handleBillChange={this.handleBillChange}  handleBillSubmit={this.handleBillSubmit} deleteBill={this.deleteBill} handleBillUpdate={this.handleBillUpdate} updateName={this.handleBillNameUpdate} isInEditMode={this.state.isInEditMode}/>
           </div>
         </div>
       </div>
