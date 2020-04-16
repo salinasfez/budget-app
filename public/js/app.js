@@ -100,11 +100,11 @@ class Expenses extends React.Component {
                     <tr>
                         {/* <td onDoubleClick={() => this.props.changeEditMode()}> {item.name} </td> */}
                         {this.props.isInEditMode ? 
-                          <td><form onSubmit={this.props.updateName}><input type='text' id='name' defaultValue={item.name}
-                          value={this.props.name} onChange={this.props.handleBillChange}/>
+                          <td><form onSubmit={(event) => this.props.updateName(item, index, event)}><input type='text' id='name' defaultValue={item.name}
+                          value={this.props.name} onChange={(event) => this.props.handleNameChange(index, event)}/>
                           <button onClick={this.props.changeEditMode}>x</button>
                           <button type='submit' >ok</button></form></td>
-                        : <td  onClick={() => this.props.updateName(item, index)}>{item.name}</td>}
+                        : <td  onClick={() => this.props.changeEditMode()}>{item.name}</td>}
                        {/* <td onDoubleClick={() => this.props.changeEditMode}>{item.name}</td>} */}
                         <td>${item.amount}</td>
                         <td onClick={() => this.props.handleBillUpdate(item, index)}>{item.isPaid ? `Paid`: 'Not paid'}</td>
@@ -200,8 +200,10 @@ changeEditMode = () => {
     isInEditMode: !this.state.isInEditMode
   })
 }
-handleBillNameUpdate = (item, index) => {
+handleBillNameUpdate = (item, index, event) => {
+  event.preventDefault();
   this.state.isInEditMode = !this.state.isInEditMode;
+  console.log(item)
   fetch('bills/' + item._id, {
       body: JSON.stringify(item),
       method: "PUT",
@@ -224,6 +226,16 @@ handleBillNameUpdate = (item, index) => {
       })
   })
   .catch(err => console.log(err));
+}
+handleNameChange = (index, event) => {
+  //get bill index and copying array of bills
+  const bills = [...this.state.bills];
+  //changing name(property) to event.target.value
+  bills[index][event.target.id] = event.target.value;
+  this.setState({
+    bills: bills
+  })
+  console.log(bills);
 }
 deleteBill = (id, index) => {
   fetch('bills/' + id, {
@@ -282,7 +294,7 @@ deleteIncome = (id, index) => {
         <div className='container-app border'>          
           <Income income={this.state.income} handleIncomeChange={this.handleIncomeChange} handleIncomeSubmit={this.handleIncomeSubmit} deleteIncome={this.deleteIncome} bills={this.state.bills} />
           <div className='row'>
-           <Expenses bills={this.state.bills} handleBillChange={this.handleBillChange}  handleBillSubmit={this.handleBillSubmit} deleteBill={this.deleteBill} handleBillUpdate={this.handleBillUpdate} updateName={this.handleBillNameUpdate} isInEditMode={this.state.isInEditMode} changeEditMode={this.changeEditMode} updateNewName={this.updateNewName}/>
+           <Expenses bills={this.state.bills} handleBillChange={this.handleBillChange}  handleBillSubmit={this.handleBillSubmit} deleteBill={this.deleteBill} handleBillUpdate={this.handleBillUpdate} updateName={this.handleBillNameUpdate} isInEditMode={this.state.isInEditMode} changeEditMode={this.changeEditMode} handleNameChange={this.handleNameChange}/>
           </div>
         </div>
       </div>
