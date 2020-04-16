@@ -3,13 +3,6 @@ class Income extends React.Component {
   constructor(props){
     super(props);
   }
-  // state = {
-  //   income: [],
-  //   amount: '',
-  //   savings: 0,
-  //   name: name
-  // };
- 
   render() {
     // let totalIncome = this.props.firstIncome.amount + this.props.secondIncome.amount + this.props.thirdIncome.amount;
     let totalIncome = this.props.income.reduce(function(a,b) {return a + b.amount}, 0)
@@ -43,34 +36,15 @@ class Income extends React.Component {
                        </tr>
                     )
                   })}
-
             </tbody>
-          </table>
-                  
+          </table> 
                  <br></br>
-                  
-
-        
                  Total Income: ${totalIncome}
         </div>
         {/* <div className='col border my-3 p-3'> */}
           <div className="container-app border income-left">
-          <h5>Income left to budget</h5>
-          {/* {this.props.income[0].amount} */}
-          {/* {this.props.income.map((amount, index) => {
-                    return (
-                        <div>
-                          {this.props.bills.map((bill, index) => {
-                                return (
-                                      <div>
-                                          ${amount.amount - bill.amount}
-                                      </div>
-                    )
-                })}
-                        </div>
-                    )
-                })} */}
-               ${totalIncome - totalBillAmount}
+            <h5>Income left to budget</h5>
+            ${totalIncome - totalBillAmount}
         </div>
       </div>
       </div>
@@ -126,9 +100,11 @@ class Expenses extends React.Component {
                     <tr>
                         {/* <td onDoubleClick={() => this.props.changeEditMode()}> {item.name} </td> */}
                         {this.props.isInEditMode ? 
-                          <td><input type='text' defaultValue={item.name}/><button onClick={this.props.updateName(item, index)}>x</button></td>
-                        : <td  onDoubleClick={() => this.props.updateName(item, index)}>{item.name}</td>}
-                        {console.log(this.props.isInEditMode)}
+                          <td><form onSubmit={this.props.updateName}><input type='text' id='name' defaultValue={item.name}
+                          value={this.props.name} onChange={this.props.handleBillChange}/>
+                          <button onClick={this.props.changeEditMode}>x</button>
+                          <button type='submit' >ok</button></form></td>
+                        : <td  onClick={() => this.props.updateName(item, index)}>{item.name}</td>}
                        {/* <td onDoubleClick={() => this.props.changeEditMode}>{item.name}</td>} */}
                         <td>${item.amount}</td>
                         <td onClick={() => this.props.handleBillUpdate(item, index)}>{item.isPaid ? `Paid`: 'Not paid'}</td>
@@ -139,14 +115,13 @@ class Expenses extends React.Component {
             </tbody>
           </table>
         </div>
-
+        {/* onClick={() => this.props.updateNewName(item,index)} */}
       </div>
     )
   }
 }
 class App extends React.Component {
   state = {
-
     isInEditMode: false,
     bills: [],
     income: []
@@ -220,6 +195,11 @@ handleBillUpdate = (item, index) => {
   })
   .catch(err => console.log(err));
 }
+changeEditMode = () => {
+  this.setState({
+    isInEditMode: !this.state.isInEditMode
+  })
+}
 handleBillNameUpdate = (item, index) => {
   this.state.isInEditMode = !this.state.isInEditMode;
   fetch('bills/' + item._id, {
@@ -231,9 +211,9 @@ handleBillNameUpdate = (item, index) => {
       }
   })
   //converting response to json
-  .then(updatedItem => updatedItem.json())
+  .then(updatedItem => {return updatedItem.json()})
   // .then(updatedItem => console.log(updatedItem.name))
-  //making a new get request to update state of updated item
+  // making a new get request to update state of updated item
   .then(jsonedItem => {
     fetch('/bills')
       .then(res => res.json())
@@ -302,7 +282,7 @@ deleteIncome = (id, index) => {
         <div className='container-app border'>          
           <Income income={this.state.income} handleIncomeChange={this.handleIncomeChange} handleIncomeSubmit={this.handleIncomeSubmit} deleteIncome={this.deleteIncome} bills={this.state.bills} />
           <div className='row'>
-           <Expenses bills={this.state.bills} handleBillChange={this.handleBillChange}  handleBillSubmit={this.handleBillSubmit} deleteBill={this.deleteBill} handleBillUpdate={this.handleBillUpdate} updateName={this.handleBillNameUpdate} isInEditMode={this.state.isInEditMode}/>
+           <Expenses bills={this.state.bills} handleBillChange={this.handleBillChange}  handleBillSubmit={this.handleBillSubmit} deleteBill={this.deleteBill} handleBillUpdate={this.handleBillUpdate} updateName={this.handleBillNameUpdate} isInEditMode={this.state.isInEditMode} changeEditMode={this.changeEditMode} updateNewName={this.updateNewName}/>
           </div>
         </div>
       </div>

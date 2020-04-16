@@ -39,14 +39,14 @@ router.post('/', (req, res) => {
     });
 })
 
-
 router.put('/:id', (req, res) => {
     Bills.findByIdAndUpdate(req.params.id, req.body, {new:true}, (err, updatedBill) => {
         res.json(updatedBill)
     })
 })
-router.put('/:id', (req, res) => {
-    res.send(req.body);
-})
+
+// router.put('/:id', (req, res) => {
+//     res.send(req.body);
+// })
 
 module.exports = router;
