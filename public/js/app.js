@@ -3,19 +3,20 @@ class Income extends React.Component {
   constructor(props){
     super(props);
   }
+  
   render() {
     // let totalIncome = this.props.firstIncome.amount + this.props.secondIncome.amount + this.props.thirdIncome.amount;
     let totalIncome = this.props.income.reduce(function(a,b) {return a + b.amount}, 0)
     let totalBillAmount = this.props.bills.reduce(function(a,b) {return a + b.amount}, 0)
     return (
       <div className='row justify-content-center' >
-      <form class="form-inline " onSubmit={this.props.handleIncomeSubmit}>
+      <form name='incomeForm' class="form-inline " onSubmit={this.props.handleIncomeSubmit}>
         <div class="form-group mb-2">
           <label htmlFor="amount" className="form-control-plaintext monthly-income">Monthly Income</label>
         </div>
 
         <div class="form-group mx-sm-3 mb-2">
-          <input type="text" class="form-control" id="amount" placeholder="amount" value={this.props.amount} onChange={this.props.handleIncomeChange} required/>
+          <input type="number" class="form-control" id="amount" placeholder="amount" value={this.props.amount} onChange={this.props.handleIncomeChange} required/>
         </div>
         <button type="submit" class="btn btn-primary mb-2">Submit</button>
       </form>
@@ -56,7 +57,29 @@ class Expenses extends React.Component {
   constructor(props){
     super(props);
   }
+  validateName = () => {
+    const inputName = document.forms['myForm']['name'].value;
+    if ( inputName === typeof String){
+        return inputName
+      
+    }
+    else{
+      alert('Invalid name input')
+    }
+  }
+  validateAmount = () => {
+    const inputAmount = document.forms['myForm']['amount'].value;
+    if ( inputAmount === typeof Number){
+        return inputAmount
+      
+    }
+    else{
+      alert('Invalid amount input')
+    }
+  }
   render() {
+    const validName = typeof String;
+    const validAmount = typeof Number;
     return (
       <div className='col'>
 
@@ -65,13 +88,14 @@ class Expenses extends React.Component {
         ****************/}
 
         <div className="border my-3 p-3 add-expense" >
-          <form onSubmit={this.props.handleBillSubmit}>
+          <form name='myForm' onSubmit={this.props.handleBillSubmit, this.validateName}>
             <div className="form-group">
               <h4 className='text-center'>Add Expense</h4>
               <h6><label>Name</label></h6>
-              <input className="form-control" type='text' id="name" placeholder="name" value={this.props.name} onChange={this.props.handleBillChange} required/><br />
+              <input className="form-control" type='text' id="name" placeholder="name" value={this.props.name} onChange={this.props.handleBillChange} required/>
+              <br />
               <h6><label>Amount</label></h6>
-              <input className="form-control" type='text' id="amount" placeholder="amount" value={this.props.amount} onChange={this.props.handleBillChange} required/>
+              <input className="form-control" type='number' id="amount" placeholder="amount" value={this.props.amount} onChange={this.props.handleBillChange} required/>
             </div>
             <button type="submit" className="btn btn-primary mb-2">Submit</button>
           </form>
@@ -102,9 +126,9 @@ class Expenses extends React.Component {
                         {this.props.isInEditMode ? 
                           <td><form onSubmit={(event) => this.props.updateName(item, index, event)}><input type='text' id='name' defaultValue={item.name}
                           value={this.props.name} onChange={(event) => this.props.handleNameChange(index, event)}/>
-                          <button onClick={this.props.changeEditMode}>x</button>
                           <button type='submit' >ok</button></form></td>
                         : <td  onClick={() => this.props.changeEditMode()}>{item.name}</td>}
+                        {/* <td  onClick={() => this.props.changeEditMode()}>{item.name}</td>} */}
                        {/* <td onDoubleClick={() => this.props.changeEditMode}>{item.name}</td>} */}
                         <td>${item.amount}</td>
                         <td onClick={() => this.props.handleBillUpdate(item, index)}>{item.isPaid ? `Paid`: 'Not paid'}</td>
