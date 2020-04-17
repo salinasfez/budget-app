@@ -106,9 +106,13 @@ class Expenses extends React.Component {
                           value={this.props.name} onChange={(event) => this.props.handleNameChange(index, event)}/>
                           <button type='submit' >ok</button></form></td>
                         : <td  onClick={() => this.props.changeEditMode()}>{item.name}</td>}
-                        {/* <td  onClick={() => this.props.changeEditMode()}>{item.name}</td>} */}
-                       {/* <td onDoubleClick={() => this.props.changeEditMode}>{item.name}</td>} */}
-                        <td>${item.amount}</td>
+                         
+                         {this.props.isInEditMode ? 
+                          <td><form onSubmit={(event) => this.props.updateName(item, index, event)}><input type='number' min='0' step='.01' id='amount' defaultValue={item.amount}
+                          value={this.props.amount} onChange={(event) => this.props.handleNameChange(index, event)}/>
+                          <button type='submit' >ok</button></form></td>
+                        : <td  onClick={() => this.props.changeEditMode()}>${item.amount}</td>}
+                        {/* <td>${item.amount}</td> */}
                         <td onClick={() => this.props.handleBillUpdate(item, index)}>{item.isPaid ? `Paid`: 'Not paid'}</td>
                         <td><button onClick={() => this.props.deleteBill(item._id, index)}>Delete</button></td>
                     </tr>
