@@ -3,10 +3,10 @@ class Income extends React.Component {
   constructor(props){
     super(props);
   }
-  
+ 
   render() {
     // let totalIncome = this.props.firstIncome.amount + this.props.secondIncome.amount + this.props.thirdIncome.amount;
-    let totalIncome = this.props.income.reduce(function(a,b) {return a + b.amount}, 0)
+    let totalIncome = this.props.income.reduce(function(a,b) {return a + b.amount}, 0) 
     let totalBillAmount = this.props.bills.reduce(function(a,b) {return a + b.amount}, 0)
     return (
       <div className='row justify-content-center' >
@@ -16,7 +16,7 @@ class Income extends React.Component {
         </div>
 
         <div class="form-group mx-sm-3 mb-2">
-          <input type="number" class="form-control" id="amount" placeholder="amount" value={this.props.amount} onChange={this.props.handleIncomeChange} required/>
+          <input type="number" class="form-control" id="amount" min='0' step='.01' placeholder="amount" value={this.props.amount} onChange={this.props.handleIncomeChange} required/>
         </div>
         <button type="submit" class="btn btn-primary mb-2">Submit</button>
       </form>
@@ -57,29 +57,7 @@ class Expenses extends React.Component {
   constructor(props){
     super(props);
   }
-  validateName = () => {
-    const inputName = document.forms['myForm']['name'].value;
-    if ( inputName === typeof String){
-        return inputName
-      
-    }
-    else{
-      alert('Invalid name input')
-    }
-  }
-  validateAmount = () => {
-    const inputAmount = document.forms['myForm']['amount'].value;
-    if ( inputAmount === typeof Number){
-        return inputAmount
-      
-    }
-    else{
-      alert('Invalid amount input')
-    }
-  }
   render() {
-    const validName = typeof String;
-    const validAmount = typeof Number;
     return (
       <div className='col'>
 
@@ -88,14 +66,14 @@ class Expenses extends React.Component {
         ****************/}
 
         <div className="border my-3 p-3 add-expense" >
-          <form name='myForm' onSubmit={this.props.handleBillSubmit, this.validateName}>
+          <form name='myForm' onSubmit={this.props.handleBillSubmit}>
             <div className="form-group">
               <h4 className='text-center'>Add Expense</h4>
               <h6><label>Name</label></h6>
               <input className="form-control" type='text' id="name" placeholder="name" value={this.props.name} onChange={this.props.handleBillChange} required/>
               <br />
               <h6><label>Amount</label></h6>
-              <input className="form-control" type='number' id="amount" placeholder="amount" value={this.props.amount} onChange={this.props.handleBillChange} required/>
+              <input className="form-control" type='number' id="amount" step='.01' placeholder="amount" value={this.props.amount} onChange={this.props.handleBillChange} required/>
             </div>
             <button type="submit" className="btn btn-primary mb-2">Submit</button>
           </form>
