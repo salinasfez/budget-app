@@ -1,6 +1,9 @@
 {
   "name": "MERN_Ninjas",
   "version": "1.0.0",
+  "engines": {
+    "node": "10.16.3"
+  },
   "description": "Mern_Ninja #1 Federico Salinas Dalton Studebaker Jose Anzueto Swetha Khaidalagudam",
   "main": "server.js",
   "scripts": {

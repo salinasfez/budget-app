@@ -6,8 +6,11 @@ class Income extends React.Component {
  
   render() {
     // let totalIncome = this.props.firstIncome.amount + this.props.secondIncome.amount + this.props.thirdIncome.amount;
-    let totalIncome = this.props.income.reduce(function(a,b) {return a + b.amount}, 0) 
+    // let totalIncome = this.props.income.reduce(function(a,b) {return a + b.amount}, 0) 
+    let totalIncome = this.props.income.reduce(function(a,b) {return a + b.amount}, 0);
+    // let totalBillAmount = Math.floor((this.props.bills.reduce(function(a,b) {return a + b.amount}, 0) * 100) / 100);
     let totalBillAmount = this.props.bills.reduce(function(a,b) {return a + b.amount}, 0)
+    
     return (
       <div className='row justify-content-center' >
       <form name='incomeForm' class="form-inline " onSubmit={this.props.handleIncomeSubmit}>
@@ -45,6 +48,7 @@ class Income extends React.Component {
         {/* <div className='col border my-3 p-3'> */}
           <div className="container-app border income-left">
             <h5>Income left to budget</h5>
+           
             ${totalIncome - totalBillAmount}
         </div>
       </div>
