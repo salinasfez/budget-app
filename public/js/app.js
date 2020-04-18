@@ -12,7 +12,8 @@ class Income extends React.Component {
     let totalBillAmount = this.props.bills.reduce(function(a,b) {return a + b.amount}, 0)
     
     return (
-      <div className='row justify-content-center' >
+      <div className='row flex-container' >
+      <div className='row justify-content-center'  >
       <form name='incomeForm' class="form-inline " onSubmit={this.props.handleIncomeSubmit}>
         <div class="form-group mb-2">
           <label htmlFor="amount" className="form-control-plaintext monthly-income">Monthly Income</label>
@@ -23,7 +24,6 @@ class Income extends React.Component {
         </div>
         <button type="submit" class="btn btn-primary mb-2">Submit</button>
       </form>
-      <div className='row flex-container' >
         {/* <div className='col border my-3 p-3'> */}
           <div className="container-app border income">
           <table className="table table-striped">
