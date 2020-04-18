@@ -90,6 +90,7 @@ class Expenses extends React.Component {
 
         <div className=' border my-3 p-3 expense-details'>
           <h4 className="text-center">Expense Details</h4>
+          <p className='edit text-center'>Click to edit</p>
           <table className="table table-striped">
             <thead>
               <tr>

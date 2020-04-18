@@ -33,7 +33,8 @@ padding: 20px 40px;
 .main-container {
     /* background-color: #88C136; */
     /* border: 2px solid #88C136; */
-    border: 5px solid rgb(72, 75, 73);
+    border: 1px solid rgb(125, 130, 126);
+    margin-top: 10%;
 }
 .add-expense {
     background-color: white;
