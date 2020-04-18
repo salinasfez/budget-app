@@ -1,8 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap');
 
 
-.container {
+/* .container {
     max-width: 900px;
+} */
+.container {
+    width: 70%;
+    /* max-width: 900px; */
 }
 
 .container-app{
@@ -58,5 +62,5 @@ h5, th, h6 {
 } */
 
 /* @media screen and (max-width: 450px){
-
+    
 } */
