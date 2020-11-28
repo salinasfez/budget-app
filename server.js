@@ -4,9 +4,12 @@ const mongoose = require('mongoose')
 const app = express()
 const db = mongoose.connection;
 const method = require('method-override');//method override 
+require('dotenv').config();
+
+
 
 // Environment Variables
-const mongoURI = process.env.MONGODB_URI || 'mongodb+srv://heroku_hghqxbz6:9W9yUjEMy5jimvH0@cluster-hghqxbz6.axmdf.mongodb.net/heroku_hghqxbz6?retryWrites=true&w=majority'
+const mongoURI = process.env.MONGODB_URI || process.env.USER_AUTH;
 const PORT = process.env.PORT || 3000
 
 // Connect to Mongo
