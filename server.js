@@ -9,9 +9,9 @@ require('dotenv').config();
 
 
 // Environment Variables
-const mongoURI = process.env.MONGODB_URI || process.env.USER_AUTH;
+const mongoURI = process.env.USER_AUTH;
 const PORT = process.env.PORT || 3000
-
+console.log(mongoURI)
 // Connect to Mongo
 mongoose.connect(mongoURI, { useNewUrlParser: true },
   () => console.log('MongoDB connection established:', mongoURI)
